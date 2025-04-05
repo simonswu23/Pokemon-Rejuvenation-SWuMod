@@ -3547,9 +3547,9 @@ class PokeBattle_AI
       when 0x900 # Barbed Web
         if @attacker.pbOpposingSide.effects[:Spikes] < 3 || @attacker.pbOpposingSide.effects[:ToxicSpikes] < 2
           miniscore = hazardcode()
-          miniscore *= 0.9 if @attacker.pbOpposingSide.effects[:Spikes] > 0 || @attacker.pbOpposingSide.effects[:ToxicSpikes] > 0
+          miniscore *= 0.9 if @attacker.pbOpposingSide.effects[:Spikes] > 0 && @attacker.pbOpposingSide.effects[:ToxicSpikes] > 0
           if @mondata.skill>=BESTSKILL
-            miniscore *= 0 if @battle.FE == :WATERSURFACE || @battle.FE == :MURKWATERSURFACE # (Murk)Water Surface
+            miniscore = 0 if @battle.FE == :WATERSURFACE || @battle.FE == :MURKWATERSURFACE # (Murk)Water Surface
             miniscore *= 1.3 if Rejuv && @battle.FE == :ELECTERRAIN
           end
         end
@@ -10828,6 +10828,10 @@ class PokeBattle_AI
       boost = (@battle.FE == :FAIRYTALE || @battle.FE == :COLOSSEUM) ? 2 : 1
       mon.stages[PBStats::DEFENSE]+=boost
       mon.stages[PBStats::SPDEF]+=1 if (@battle.FE == :FAIRYTALE || @battle.FE == :COLOSSEUM)
+    end
+    # Anticipation
+    if mon.ability==:ANTICIPATION
+      mon.stages[PBStats::SPEED] += 1 if mon.pbAnticipationShudder
     end
     # Steadfast
     if mon.ability==:STEADFAST && ((Rejuv && @battle.FE == :ELECTERRAIN) || @battle.state.effects[:ELECTERRAIN] > 0)

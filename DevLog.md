@@ -61,7 +61,6 @@
       - Chi Strike (+1 to CHR for all allies)
       - Change Gravitas (effect moved to applefall)
     - Abilities:
-      - Anticipation: shuddered pokemon takes 1/2 damage from first instance of SE attack
       - Forewarn: all allies avoid all instances of the forewarned attack until the end of the turn
       - Magician: if attacking a target with a held item, x1.3 power and steals/removes it
       - Aftermath: also explodes for 100 BP upon fainting (matches user's primary stab typing)
@@ -130,7 +129,10 @@
     - Learnset updates for new moves
 
 # Journal
-- 4/2/25
+- 4/4/25 (Ren)
+  - Implemented +1 speed boost for Anticipation shudders, and updated AI to account for this
+
+- 4/2/25 (Ren)
   - Implemented Barbed Web to add spikes or toxic spikes randomly, and updated AI to account for this
 
 - 3/10/25

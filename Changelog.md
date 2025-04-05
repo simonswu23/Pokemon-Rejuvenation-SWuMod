@@ -46,6 +46,7 @@
   - Cursed Body now always activates if the attack knocked the user out
   - Plus: now provides a x1.15 boost to all friendly attacks, x1.5 if an ally has Minus. x2 speed an if ally has Plus.
   - Minus: now provides a x0.85 reduction to all opposing attacks, x0.67 if ally has Plus. x2 speed if an ally has Minus.
+  - Anticipation: The pokemon gains +1 speed upon shuddering
 
 
 # Crests

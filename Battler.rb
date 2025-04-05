@@ -100,7 +100,7 @@ class PokeBattle_Battler
     :Commander, :Commandee, :DoubleShock, :Charge, :GlaiveRush, :SaltCure,
     # Kaizomod
     :HydreigonCrest, :FlowerShield, :MagicGuard]
-  
+
   #turn count vars
   # Gen 9 Mod - Removed Charge from TurnEff
   TurnEff = [:Bide, :Confusion, :Disable, :Embargo, :Encore,
@@ -115,7 +115,7 @@ class PokeBattle_Battler
     :MirrorCoatTarget, :CounterTarget, :MultiTurnUser, :Octolock, :Petrification, :ShellTrapTarget, :SyrupBombUser]  # Gen 9 Mod - Added SyrupBombUser to track who used the move.
 
   #other counter vars # Gen 9 Mod - Added Supreme Overlord.
-  CountEff = [:BideDamage, :Damage, :FocusEnergy, :ProtectRate, :Rollout, :EchoedVoice, :SpeedSwap, :Stockpile, :StockpileDef, :StockpileSpDef, :WeightModifier, :SupremeOverlord] 
+  CountEff = [:BideDamage, :Damage, :FocusEnergy, :ProtectRate, :Rollout, :EchoedVoice, :SpeedSwap, :Stockpile, :StockpileDef, :StockpileSpDef, :WeightModifier, :SupremeOverlord]
 
   #weirdo shit (usually move objects)
   OtherEff = [:ChoicedMove, :DisableMove, :EncoreMove, :MagicBounce, :Protect, :BouncedMove, :ItemRemoval] #:TwoTurnAttack
@@ -433,7 +433,6 @@ class PokeBattle_Battler
     @battle_bond_flags = []
 
     @forewarn     = []
-    @anticipation = false
     @gear         = 0        # 0 is speed gear, 1 is attack gear
 
     @lastMoveCancelled = -1
@@ -2913,7 +2912,7 @@ class PokeBattle_Battler
     if self.ability == :ICEFACE && self.form == 1 && self.species == :EISCUE && onactive
       if @battle.weather == :HAIL
         self.pbRegenFace
-        @battle.pbDisplay(_INTL("{1} transformed!",self.pbThis)) 
+        @battle.pbDisplay(_INTL("{1} transformed!",self.pbThis))
       end
     end
     # Pastel Veil
@@ -3142,7 +3141,7 @@ class PokeBattle_Battler
         if @battle.FE == :BACKALLEY
           if (i.effects[:Substitute]==0) && (i.ability != :STICKYHOLD || i.moldbroken) && self.item.nil?
             if !@battle.pbIsUnlosableItem(i,i.item) && !@battle.pbIsUnlosableItem(self,i.item)
-              self.item=i.item 
+              self.item=i.item
               i.item=nil
               if i.pokemon.corrosiveGas
                 i.pokemon.corrosiveGas=false
@@ -3164,24 +3163,13 @@ class PokeBattle_Battler
     end
     # Anticipation
     if self.ability == :ANTICIPATION && onactive
-      found=false
-      for foe in [pbOpposing1,pbOpposing2]
-        next if foe.isFainted?
-        for j in foe.moves
-          movedata=$cache.moves[j.move]
-          eff=PBTypes.twoTypeEff(movedata.type,type1,type2)
-          if (movedata.basedamage>0 && eff>4 &&
-             movedata.function!=0x71 && # Counter
-             movedata.function!=0x72 && # Mirror Coat
-             movedata.function!=0x73) || # Metal Burst
-             (movedata.function==0x70 && eff>0) # OHKO
-            found=true
-            break
-          end
+      if self.pbAnticipationShudder
+        @battle.pbDisplay(_INTL("{1} shuddered with anticipation!",pbThis))
+        if pbCanIncreaseStatStage?(PBStats::SPEED)
+          pbIncreaseStat(PBStats::SPEED,1,statmessage: false)
+          @battle.pbDisplay(_INTL("{1}'s {2} raised its speed!", self.pbThis, getAbilityName(self.ability)))
         end
-        break if found
       end
-      @battle.pbDisplay(_INTL("{1} shuddered with anticipation!",pbThis)) if found
     end
     if [:UNNERVE, :ASONECHILLING, :ASONEGRIM].include?(self.ability) && onactive
       if @battle.pbOwnedByPlayer?(@index)
@@ -4030,6 +4018,26 @@ class PokeBattle_Battler
     end
   end
 
+  # Checks if the Pokemon will shudder, assuming it was just switched in to activate Anticipation
+  def pbAnticipationShudder
+    return false if self.ability != :ANTICIPATION
+    for foe in [self.pbOpposing1, self.pbOpposing2]
+      next if foe.isFainted?
+      for j in foe.moves
+        movedata=$cache.moves[j.move]
+        eff=PBTypes.twoTypeEff(movedata.type,self.type1,self.type2)
+        if (movedata.basedamage>0 && eff>4 &&
+            movedata.function!=0x71 && # Counter
+            movedata.function!=0x72 && # Mirror Coat
+            movedata.function!=0x73) || # Metal Burst
+            (movedata.function==0x70 && eff>0) # OHKO
+          return true
+        end
+      end
+    end
+    return false
+  end
+
   def pbAbilityCureCheck
     return if self.isFainted?
     if self.ability == :LIMBER && self.status== :PARALYSIS
@@ -4562,7 +4570,7 @@ class PokeBattle_Battler
     elsif @battle.zMove[side][owner]==self.index && move.category != :status
       target=:SingleNonUser
     end
-    
+
     # @SWu TODO: run through all Giga moves to fix their targeting here
     side=(pbIsOpposing?(self.index)) ? 1 : 0
     owner=@battle.pbGetOwnerIndex(self.index)
@@ -5008,7 +5016,7 @@ class PokeBattle_Battler
             user.pbBurn(target)
             @battle.pbDisplay(_INTL("{1}'s Burning Bulwark burned {2}!",target.pbThis,user.pbThis(true)))
           end
-        end 
+        end
         return false
       end
     end
@@ -5599,7 +5607,7 @@ class PokeBattle_Battler
       if target.damagestate.calcdamage > 0 && !target.isFainted?
         # Defrost
         # called out of method due to needing the hitcounter for parental bond
-        if (basemove.pbType(user) == :FIRE || basemove.function==0x0A) && target.status== :FROZEN && !(user.ability == (:PARENTALBOND) && i==0) && !(user.crested == :HYDREIGON && i==0) 
+        if (basemove.pbType(user) == :FIRE || basemove.function==0x0A) && target.status== :FROZEN && !(user.ability == (:PARENTALBOND) && i==0) && !(user.crested == :HYDREIGON && i==0)
           target.pbCureStatus
         end
         # Rage
@@ -5665,7 +5673,7 @@ class PokeBattle_Battler
     user.pbFaint if user.isFainted? # no return
     killflag = false
     if target.isFainted?
-      # Gen 9 Mod - Added Bisharp's evolution conditition with Leader's Crest. 
+      # Gen 9 Mod - Added Bisharp's evolution conditition with Leader's Crest.
       #We are doing this with our BISHARP holding LEADERSCREST, OR with the enemy BISHARP holding it. BOTH ways work. KINGAMBIT also work as enemy.
       if (target.species == :BISHARP || target.species == :KINGAMBIT) && (user.item == :LEADERSCREST || target.item == :LEADERSCREST) && user.species == :BISHARP
         user.pokemon.defeatedEnemies = 0 if !user.pokemon.defeatedEnemies
@@ -7074,7 +7082,7 @@ class PokeBattle_Battler
       blacklist = PBStuff::BLACKLISTS[:ENCORE]
       move = self.lastMoveUsed
       return false if !move.is_a?(Symbol) || blacklist.include?(move) || self.effects[:ShellTrap]
-  
+
       # First check if their last choice matches the encore'd move.
       moveIndex = self.lastMoveChoice[1]
       # Just to be safe, if it doesn't match, find it manually.

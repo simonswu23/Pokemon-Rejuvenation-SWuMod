@@ -663,7 +663,7 @@ ABILHASH = {
 :ANTICIPATION => {
     :ID => 107,
     :name => "Anticipation",
-    :desc => "Senses a foe's dangerous moves."
+    :desc => "Boosts speed if it senses a foe with dangerous moves."
 },
 
 :FOREWARN => {
