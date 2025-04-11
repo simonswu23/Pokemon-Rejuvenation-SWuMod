@@ -31,6 +31,7 @@ class Battle_Side
     # Kaizomod effects
     @effects[:EmbargoSide]     = 0
     @effects[:Wildfire]        = 0
+    @effects[:LuckyWind]       = 0
   end
 
   def screenActive?(type=nil)

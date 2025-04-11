@@ -604,6 +604,10 @@ class PokeBattle_Move
       mod1 = 2 if otype1 == :FLYING && mod1 > 2
       mod2 = 2 if otype2 == :FLYING && mod2 > 2
     end
+    if @battle.pbWeather == :SUNNYDAY && opponent.ability == :LEAFGUARD
+      mod1 = 2 if otype1 == :GRASS && mod1 > 2
+      mod2 = 2 if otype2 == :GRASS && mod2 > 2
+    end
     if @battle.pbWeather == :SSANDSTREAM
       mod1 = 2 if otype1 == :ROCK && mod1 > 2
       mod2 = 2 if otype2 == :ROCK && mod2 > 2
@@ -1395,6 +1399,7 @@ class PokeBattle_Move
 
     # accuracy modifiers
     accuracy *= 1.67 if @battle.state.effects[:Gravity] != 0
+    accuracy *= 1.25 if @battle.pbCheckGlobalAbility(:ILLUMINATE)
     if attacker.ability == :COMPOUNDEYES
       accuracy *= 1.3
     end
@@ -1406,14 +1411,17 @@ class PokeBattle_Move
       end
     end
     if attacker.ability == :VICTORYSTAR
-      accuracy *= 1.1
+      accuracy *= 1.5
     end
     partner = attacker.pbPartner
     if partner && partner.ability == :VICTORYSTAR
-      accuracy *= 1.1
+      accuracy *= 1.5
     end
     if attacker.hasWorkingItem(:WIDELENS)
       accuracy *= 1.1
+    end
+    if attacker.pbOwnSide.effects[:LuckyWind] != 0
+      accuracy *= 1.15
     end
     # Hypno Crest, Stantler Crest
     if [:HYPNO, :STANTLER, :WYRDEER].include?(attacker.crested)
@@ -1474,6 +1482,7 @@ class PokeBattle_Move
     c += 1 if !@data.nil? && highCritRate?
     c += 1 if attacker.inHyperMode? && getMoveType(@move) == :SHADOW
     c += 1 if attacker.ability == :SUPERLUCK
+    c += 1 if attacker.pbOwnSide.effects[:LuckyWind] != 0
     c += 2 if attacker.hasWorkingItem(:STICK) && (attacker.pokemon.species == :FARFETCHD || attacker.pokemon.species == :SIRFETCHD)
     c += 2 if attacker.hasWorkingItem(:LUCKYPUNCH) && (attacker.pokemon.species == :CHANSEY)
     if @battle.FE == :MIRROR
@@ -2444,6 +2453,11 @@ class PokeBattle_Move
     # Gen 9 Mod - Moves will deal double damage to an opponent that last used Glaive Rush. Also includes Electro Drift and Collision Course.
     finalmult *= 2.0 if opponent.effects[:GlaiveRush] == true
     finalmult *= (5461 / 4096.to_f) if [:ELECTRODRIFT, :COLLISIONCOURSE].include?(@move) && opponent.damagestate.typemod > 4
+    if attacker.forewarn == getMoveName(@move)
+      finalmult *= 0.25
+      @battle.pbDisplay(_INTL("The opposing team is prepared for the forewarned attack!"))
+      attacker.forewarn = nil
+    end
     if opponent.damagestate.typemod > 4 && opponent.itemWorks?
       hasberry = false
       case type

@@ -28,6 +28,8 @@
     - opposing pokemon may not use status moves
   - Pincushion
     - scatters a layer of spikes on the opposing team when hit by a physical attack, also damages attackers by 1/8 hp on contact
+  - Itchy Pollen
+    - upon entry, uses Rage Powder (effect lasts until the end of the turn)
 
   ## Changes
   - Magma Armor protects against Frostbite
@@ -43,13 +45,15 @@
   - Unnerve lowers foes speed on entry (same interactions as Intimidate)
   - Pressure lowers foes special attack on entry (same interactions as Intimidate)
   - Supersweet Syrup now can trigger multiple times per battle, and lowers evasion by 2 on switch in
-  - Frisk suppresses found items for 1 turn
+  - Frisk suppresses found items for 3 turns
   - Damp creates Water Sport on entry
   - Cursed Body now always activates if the attack knocked the user out
-  - Plus: now provides a x1.15 boost to all friendly attacks, x1.5 if an ally has Minus. x2 speed an if ally has Plus.
-  - Minus: now provides a x0.85 reduction to all opposing attacks, x0.67 if ally has Plus. x2 speed if an ally has Minus.
-  - Anticipation: The pokemon gains +1 speed upon shuddering
-  - Iron Fist: now provides a x1.5 boost instead to punching attacks
+  - Plus now provides a x1.15 boost to all friendly attacks, x1.5 if an ally has Minus. x2 speed an if ally has Plus.
+  - Minus now provides a x0.85 reduction to all opposing attacks, x0.67 if ally has Plus. x2 speed if an ally has Minus.
+  - Anticipation now grants the pokemon +1 speed upon shuddering
+  - Iron Fist now provides a x1.5 boost instead to punching attacks
+  - Forewarn now quarters the first instance of the forewarned attack by the opponent
+  - Leaf Guard now additionally negates Grass weaknesses in the Sun
 
 # Crests
 

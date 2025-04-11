@@ -7371,7 +7371,7 @@ class PokeBattle_Move_0F7 < PokeBattle_Move
       @battle.pbDisplay(_INTL("{1} flung its {2}!", attacker.pbThis, getItemName(attacker.item)))
     end
     ret = super(attacker, opponent, hitnum, alltargets, showanimation)
-    if opponent.damagestate.calcdamage > 0 && !opponent.damagestate.substitute &&
+    if opponent.damagestate.calcdamage > 0 && !opponent.damagestate.substitute && opponent.pbOwnSide.effects[:LuckyWind] != 0 &&
        ((opponent.ability != :SHIELDDUST || opponent.moldbroken) && opponent.item != :COVERTCLOAK) # Gen 9 Mod - Added Covert Cloak
       if @item.pbGetPocket(attacker.item) == 5
         @battle.pbDisplay(_INTL("{1} ate the {2}!", opponent.pbThis, getItemName(attacker.item)))
@@ -12780,7 +12780,7 @@ class PokeBattle_Move_918 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     ret=super(attacker,opponent,hitnum,alltargets,showanimation)
     # Gen 9 Mod - Added Covert Cloak
-    if !opponent.isFainted? && opponent.damagestate.calcdamage>0 && !opponent.damagestate.substitute && opponent.ability != :SHIELDDUST && opponent.item != :COVERTCLOAK && attacker.ability != :SHEERFORCE
+    if !opponent.isFainted? && opponent.damagestate.calcdamage>0 && !opponent.damagestate.substitute && opponent.ability != :SHIELDDUST && opponent.item != :COVERTCLOAK && attacker.ability != :SHEERFORCE && opponent.pbOwnSide.effects[:LuckyWind] != 0
       if !opponent.effects[:SaltCure]
          opponent.effects[:SaltCure] = true
          @battle.pbDisplay(_INTL("{1} is being salt cured!",opponent.pbThis))
@@ -12905,7 +12905,7 @@ class PokeBattle_Move_91E < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     ret=super(attacker,opponent,hitnum,alltargets,showanimation)
     # Gen 9 Mod - Added Covert Cloak
-    if !opponent.isFainted? && opponent.damagestate.calcdamage>0 && !opponent.damagestate.substitute && ((opponent.ability != :SHIELDDUST || opponent.moldbroken) && opponent.item != :COVERTCLOAK) && (attacker.ability != :SHEERFORCE || attacker.moldbroken)
+    if !opponent.isFainted? && opponent.damagestate.calcdamage>0 && !opponent.damagestate.substitute && ((opponent.ability != :SHIELDDUST || opponent.moldbroken) && opponent.item != :COVERTCLOAK) && (attacker.ability != :SHEERFORCE || attacker.moldbroken) && opponent.pbOwnSide.effects[:LuckyWind] != 0
       opponent.effects[:SyrupBomb] = 4
       opponent.effects[:SyrupBombUser] = attacker.index
       @battle.pbDisplay(_INTL("{1} was covered in sticky syrup!",opponent.pbThis))

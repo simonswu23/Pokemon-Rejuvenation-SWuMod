@@ -6350,13 +6350,6 @@ class PokeBattle_Battle
       sides[i].effects[:LuckyChant] -= 1
       pbDisplay(_INTL("#{texts[i]} team's Lucky Chant faded!")) if sides[i].effects[:LuckyChant] == 0
     end
-    # EmbargoSide
-    for i in 0...2
-      next if sides[i].effects[:EmbargoSide] == 0
-
-      sides[i].effects[:EmbargoSide] -= 1
-      pbDisplay(_INTL("#{texts[i]} team is no longer Embargoed!")) if sides[i].effects[:EmbargoSide] == 0
-    end
     # Mud Sport
     if @state.effects[:MudSport] > 0
       @state.effects[:MudSport] -= 1
@@ -6388,6 +6381,21 @@ class PokeBattle_Battle
     end
 
     # Other Effects (KAIZOMOD)
+
+    # Lucky Wind
+    for i in 0...2
+      next if sides[i].effects[:LuckyWind] == 0
+
+      sides[i].effects[:LuckyWind] -= 1
+      pbDisplay(_INTL("#{texts[i]} team's Lucky Wind ran out!")) if sides[i].effects[:LuckyWind] == 0
+    end
+    # EmbargoSide
+    for i in 0...2
+      next if sides[i].effects[:EmbargoSide] == 0
+
+      sides[i].effects[:EmbargoSide] -= 1
+      pbDisplay(_INTL("#{texts[i]} team is no longer Embargoed!")) if sides[i].effects[:EmbargoSide] == 0
+    end
 
     # Wildfire
     for i in priority

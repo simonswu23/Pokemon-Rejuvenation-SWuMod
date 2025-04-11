@@ -319,6 +319,7 @@ def pbShowBattleStats(pkmn)
   report.push(_INTL("Taunt: {1} turns",pkmn.effects[:Taunt])) if pkmn.effects[:Taunt]!=0
   report.push(_INTL("Infatuated with {1}",@battle.battlers[pkmn.effects[:Attract]].name)) if pkmn.effects[:Attract]>=0
   report.push(_INTL("Trick Room: {1} turns",@battle.trickroom)) if @battle.trickroom!=0
+  report.push(_INTL("Forewarned Move: {1}",pkmn.forewarn)) if pkmn.forewarn
   dur=@battle.state.effects[:Gravity]
   dur="Permanent" if @battle.state.effects[:Gravity]<0
   turns="turns"

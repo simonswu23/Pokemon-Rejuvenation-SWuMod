@@ -2152,4 +2152,10 @@ ABILHASH = {
     :desc => "Normal-type moves become Fire-type moves and deal 30% more damage."
 },
 
+:ITCHYPOLLEN => {
+    :ID => 390,
+    :name => "Itchy Pollen",
+    :desc => "Normal-type moves become Fire-type moves and deal 30% more damage."
+},
+
 }

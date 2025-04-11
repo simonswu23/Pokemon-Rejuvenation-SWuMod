@@ -46,13 +46,17 @@
     - Signature Pokemon
     - *document moveset updates
 
-
   ## Bug list:
     - Changed abilities (like Worry Seed, etc.) do not persist past Giga evolution
     - Protect rate sharing does not reset after a flinch
     - No anim for Tapu Koko's Guardian of Alola?
     - -1 Heal Block was able to use Sitrus Berry to heal?
     - Giga Meowth, Eevee, Pikachu do not get updated giga abilities (does not reset)
+    - Lucky Wind
+      - needs testing
+      - double-check Angie fight with Lucky Wind
+      - should be a "synchronous effect" with Tailwind and Lucky Chant
+      - should NOT be able to "stack" with Tailwind and Lucky Chant
 
   ## Rebalancing
     -
@@ -114,10 +118,16 @@
       - Pressure
       - Supersweet Syrup
       - Cursed Body
+      - Leaf Guard
+      - FIX: Toxic Chain (works on non-contact moves)
+      - Forewarn
 
     - New Abilities
       - Meteor Impactor
       - Melodramatic
+      - Pincushion
+      - Itchy Pollen
+      - Lucky Wind
 
     ## Crests
     - Changed Crests
@@ -130,27 +140,38 @@
     - Learnset updates for new moves
 
 # Journal
-- 4/4/25 (Ren)
+- 4/9/25 (@SWu)
+  - Implemented Itchy Pollen (auto-rage powder for a turn)
+  - Buffed Hapi's Lucky Wind:
+    - Tailwind
+    - Lucky Chant
+    - x2 side effect chances for the team
+    - +1 CHR for team
+    - x1.1 accuracy for team
+    - protects friendly team from side effects
+  - Leaf Guard also negates Grass type weaknesses in the Sun 
+  - updated Forewarn (quarters damage from the first instance of the forewarned move)
+  
+- 4/4/25 (@Ren)
   - Implemented +1 speed boost for Anticipation shudders, and updated AI to account for this
 
-- 4/2/25 (Ren)
+- 4/2/25 (@Ren)
   - Implemented Barbed Web to add spikes or toxic spikes randomly, and updated AI to account for this
 
-- 4/3/2025
+- 4/3/2025 (@SWu)
   - Mass Starter updates, ability todos:
     - figure out Magician
     - TODO: Revisions:
-      - Anticipation: shudder -> +1 speed
+      - Anticipation: shudder -> +1 speed (done)
       - Forewarn: per each Forewarn, reduce the damage of the first instance of the Forewarned attack by x0.25 (or half if this is too strong)
-    - Pastel Veil: additionally halves poison type damage to allies
-    - Stalwart: Halves damage of any attack that would deal more than half of current HP
-    - Battle Bond: +1 attack, special attack, and speed on KO
+      - Pastel Veil: additionally halves poison type damage to allies
+      - Stalwart: Halves damage of any attack that would deal more than half of current HP
+      - Battle Bond: +1 attack, special attack, and speed on KO
   - Added keepPrimalWeather field in Battle.rb to persist starting primal weather
   - Fixed Toxic Chain implementation to work with non-contact moves
   - forceDouble param created, can be set in :trainereffect. Can copy logic to create forceSingle if needed
 
-- 3/10/2025
-- 3/10/25
+- 3/10/2025 (@SWu)
   - Hydreigon crest shows super effective messages twice? Bug (low priority)
     - also secondary attacks currently have 100% power -- needs fixing
   - Gourmandize AI stops use after 3 stacks
@@ -158,12 +179,12 @@
   - TODO: Add Signature Mismagius and Honchkrow to Eli/Sharon fight!
   - TODO: Fix Grim Neigh / Chilling Neigh entry on Mountain fields
 
-- 2/26/25
+- 2/26/25 (@SWu)
   - Added Volcalith, Steelsurge, Inverse Stealth Rock hazards
   - Implemented Sashilan Sand Stream (perma sand, can be overridden, no damage but negates ground/rock weaknesses + grants them x1.5 spdef)
   - Matrix Shot changes (added func code to banlist for side effects that can't be blocked)
 
-- 2/23/25
+- 2/23/25 (@SWu)
   - updated terrain overlaying effects (fixed on 2/23)
   - small trainer skill bug fix (applying Mean Look)
   - fixed Unburden bug + interaction on Swamp when consuming Telluric Seed
