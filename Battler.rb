@@ -1059,7 +1059,7 @@ class PokeBattle_Battler
           if pbPartner.ability == :PRESSURE
             for i in @battle.battlers
               next if i.isFainted? || !pbIsOpposing?(i.index)
-              i.pbReduceSpatkStatStagePressure(pbPartner)
+              i.pbReduceStatStagePressure(pbPartner)
             end
           end
           if pbPartner.ability == :UNNERVE
@@ -1957,9 +1957,12 @@ class PokeBattle_Battler
       if self.ability == :PRESSURE && onactive
         for i in 0...4
           next if !pbIsOpposing?(i) || @battle.battlers[i].isFainted?
-
-          @battle.battlers[i].pbReduceStat(PBStats::DEFENSE, 1, abilitymessage: false, statdropper: self)
-          @battle.battlers[i].pbReduceStat(PBStats::SPDEF, 1, abilitymessage: false, statdropper: self)
+          if !KAIZOMOD
+            @battle.battlers[i].pbReduceStat(PBStats::DEFENSE, 1, abilitymessage: false, statdropper: self)
+            @battle.battlers[i].pbReduceStat(PBStats::SPDEF, 1, abilitymessage: false, statdropper: self)
+          else
+            @battle.battlers[i].pbReduceStat(PBStats::SPATK, 1, abilitymessage: false, statdropper: self)
+          end
         end
       end
       if self.ability == :UNNERVE && onactive
@@ -2934,7 +2937,7 @@ class PokeBattle_Battler
     if KAIZOMOD && self.ability == :PRESSURE && onactive
       for i in 0...4
         next if !pbIsOpposing?(i) || @battle.battlers[i].isFainted?
-        @battle.battlers[i].pbReduceSpatkStatStagePressure(self)
+        @battle.battlers[i].pbReduceStatStagePressure(self)
       end
     end
     if Rejuv

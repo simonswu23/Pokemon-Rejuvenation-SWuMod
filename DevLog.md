@@ -110,8 +110,6 @@
       - Frisk
       - Damp
       - Aftermath
-      - Unnerve
-      - Pressure
       - Supersweet Syrup
       - Cursed Body
 
@@ -130,6 +128,12 @@
     - Learnset updates for new moves
 
 # Journal
+- 4/10 (@Ren)
+  - Implemented Pressure changes
+    - On entry, Pressure lowers opponents' defense and special defense
+    - In Dimensional fields it additionally lowers opponents' special attack
+  - Updated AI for Pressure and Unnerve
+
 - 4/4/25 (Ren)
   - Implemented +1 speed boost for Anticipation shudders, and updated AI to account for this
 
